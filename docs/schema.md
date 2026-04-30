@@ -34,3 +34,14 @@
 | `rating`      | **Int (1–10)** | Ocena filmu w zakresie 1–10. | `8`                     |
 | `review_text` | **String**     | Krótka recenzja.             | `"Świetny klimat!"`     |
 | `created_at`  | **Date**       | Data dodania opinii.         | `ISODate("2025-02-11")` |
+
+## Decyzje projektowe
+
+**Embedded vs. osobna kolekcja dla recenzji:**
+Recenzje przechowujemy w osobnej kolekcji `reviews` (nie zagnieżdżone w filmie), ponieważ umożliwia to łatwe tworzenie unikalnego indeksu na parze `(movie_id, user_id)`, co zapewnia zasadę "jeden widz, jedna recenzja".
+
+**Unikalność recenzji:**
+Indeks `{ movie_id: 1, user_id: 1 }` z opcją `{ unique: true }` na kolekcji `reviews` uniemożliwia wstawienie drugiej recenzji tego samego użytkownika dla tego samego filmu na poziomie bazy danych.
+
+**Reżyser i aktorzy:**
+Reżyser (`director_id`) i aktorzy (`actor_ids`) to referencje do kolekcji `people`, co eliminuje duplikację danych osobowych.
